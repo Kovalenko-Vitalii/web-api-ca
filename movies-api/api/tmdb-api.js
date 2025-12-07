@@ -89,3 +89,97 @@ export const getTopRatedMovies = async (page = 1) => {
 
   return await response.json();
 };
+
+export const getMovieCredits = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_KEY}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || "TMDB error");
+  }
+
+  return await response.json();
+};
+
+export const getMovieRecommendations = async (id, page = 1) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${process.env.TMDB_KEY}&page=${page}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || "TMDB error");
+  }
+
+  return await response.json();
+};
+
+export const getMovieSimilar = async (id, page = 1) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${process.env.TMDB_KEY}&page=${page}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || "TMDB error");
+  }
+
+  return await response.json();
+};
+
+export const getPerson = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/person/${id}?api_key=${process.env.TMDB_KEY}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || "TMDB error");
+  }
+
+  return await response.json();
+};
+
+export const getPersonCombinedCredits = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/person/${id}/combined_credits?api_key=${process.env.TMDB_KEY}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || "TMDB error");
+  }
+
+  return await response.json();
+};
+
+export const getDiscoverMovies = async (params = {}) => {
+  const q = new URLSearchParams({
+    include_adult: 'false',
+    include_video: 'false',
+    language: 'en-US',
+  });
+
+  // добавляем/перезаписываем параметры из запроса (жанры, страница, сортировка и т.п.)
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && v !== '') {
+      q.set(k, String(v));
+    }
+  });
+
+  // api_key добавляем только на бэке
+  q.set('api_key', process.env.TMDB_KEY);
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?${q.toString()}`
+  );
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.status_message || 'TMDB error');
+  }
+
+  return await response.json();
+};
