@@ -216,3 +216,52 @@ export const signup = async (username, password) => {
   return response.json();
 };
 
+const authHeader = () => ({
+  Authorization: window.localStorage.getItem("token"),
+});
+
+export const getFavorites = async () => {
+  const res = await fetch("http://localhost:8080/api/favorites", {
+    headers: authHeader(),
+  });
+  return res.json();
+};
+
+export const addFavorite = async (movieId) => {
+  const res = await fetch("http://localhost:8080/api/favorites", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ movieId }),
+  });
+  return res.json();
+};
+
+export const removeFavorite = async (movieId) => {
+  return fetch(`http://localhost:8080/api/favorites/${movieId}`, {
+    method: "DELETE",
+    headers: authHeader(),
+  });
+};
+
+export const getWatchlist = async () => {
+  const res = await fetch("http://localhost:8080/api/watchlist", {
+    headers: authHeader(),
+  });
+  return res.json();
+};
+
+export const addWatchlist = async (movieId) => {
+  const res = await fetch("http://localhost:8080/api/watchlist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ movieId }),
+  });
+  return res.json();
+};
+
+export const removeWatchlist = async (movieId) => {
+  return fetch(`http://localhost:8080/api/watchlist/${movieId}`, {
+    method: "DELETE",
+    headers: authHeader(),
+  });
+};

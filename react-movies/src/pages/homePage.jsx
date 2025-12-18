@@ -7,6 +7,8 @@ import Spinner from "../components/spinner";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/authContext";
 
 export default function HomePage() {
   const [page, setPage] = useState(1);
@@ -20,6 +22,8 @@ export default function HomePage() {
   });
 
   const [filtersApplied, setFiltersApplied] = useState(filtersDraft);
+
+  const auth = useContext(AuthContext);
 
   const onUserInput = (type, value) =>
     setFiltersDraft((prev) => ({ ...prev, [type]: value }));
@@ -57,7 +61,7 @@ export default function HomePage() {
     <PageTemplate
       title="Discover Movies"
       movies={movies}
-      action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      action={(movie) => (auth.isAuthenticated ? <AddToFavoritesIcon movie={movie} /> : null)}
       filterProps={{
         onUserInput,
         onSearch,
