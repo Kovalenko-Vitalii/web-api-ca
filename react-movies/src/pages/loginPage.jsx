@@ -30,7 +30,6 @@ const LoginPage = () => {
     }
     try {
       await context.authenticate(userName, password);
-      // если не залогинилось — покажем ошибку
       if (!window.localStorage.getItem("token")) {
         setErr("Login failed. Check username/password.");
       }

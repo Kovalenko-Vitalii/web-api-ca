@@ -162,14 +162,14 @@ export const getDiscoverMovies = async (params = {}) => {
     language: 'en-US',
   });
 
-  // добавляем/перезаписываем параметры из запроса (жанры, страница, сортировка и т.п.)
+  // adding/overriding params from function argument
   Object.entries(params).forEach(([k, v]) => {
     if (v !== undefined && v !== null && v !== '') {
       q.set(k, String(v));
     }
   });
 
-  // api_key добавляем только на бэке
+  // api_key adding only on backend to avoid exposing it in frontend
   q.set('api_key', process.env.TMDB_KEY);
 
   const response = await fetch(
